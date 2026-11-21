@@ -104,10 +104,14 @@ button_card_templates:
         entity_id: "[[[ return entity.entity_id ]]]"
     hold_action:
       action: more-info
+    # Same box as hl_tile / hl_toggle (92px). Scenes have no state line, so pack
+    # the icon and name to the top and leave the state-line slot empty. Otherwise
+    # an active tree tile, which shows "On", is taller than Cozy / Party / Night.
     show_label: false
     styles:
-      card:
-        - height: "78px"
+      grid:
+        - grid-template-rows: "32px min-content min-content"
+        - align-content: start
   hl_section:
     show_icon: false
     show_name: true
@@ -198,27 +202,37 @@ views:
                 - background: "linear-gradient(90deg,#031b11 0%,#031b11 38%,rgba(3,29,18,.85) 52%,rgba(3,27,17,.05) 78%),url(/local/holiday-lair/hero-cabin.svg) right center/cover no-repeat"
                 - position: relative
               grid:
+                # button-card's vertical layout gives the first row 1fr, which
+                # dropped "Holiday Lair" onto the snow and against the status pill.
+                # Both rows stay content-sized so the title sits under the name,
+                # on the night sky (#D3A855 on #031B11).
                 - grid-template-areas: "\"greeting\" \"lair\""
                 - grid-template-columns: "minmax(0, 58%)"
+                - grid-template-rows: "min-content min-content"
                 - align-content: start
+                - justify-content: start
                 - justify-items: start
-                - row-gap: "12px"
+                - row-gap: "14px"
               custom_fields:
                 greeting:
                   - color: "#FFFDF4"
                   - text-align: left
+                  - align-self: start
                   - text-shadow: "0 2px 8px rgba(0,0,0,.34)"
                 lair:
                   - color: "#D3A855"
                   - font-size: "18px"
                   - font-weight: "650"
+                  - line-height: "1.2"
+                  - align-self: start
+                  - justify-self: start
                 menu:
                   - position: absolute
                   - right: "14px"
                   - top: "max(14px, env(safe-area-inset-top))"
             extra_styles: |
               .sal{font-size:20px;font-weight:550;line-height:1.3}
-              .who{font-size:34px;font-weight:760;line-height:1.1;margin-top:4px;overflow-wrap:anywhere}
+              .who{font-size:34px;font-weight:760;line-height:1.1;margin-top:4px;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
           - type: "custom:mod-card"
             card_mod:
               style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px !important; margin-top: -26px !important; position: relative; z-index: 2; }"
