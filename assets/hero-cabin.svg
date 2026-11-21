@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 440" width="860" height="440">
+  <!-- Holiday Lair home hero: original hand-written SVG (snowy cabin, pines, stars). MIT. -->
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#031B11"/><stop offset=".6" stop-color="#0A3A22"/><stop offset="1" stop-color="#114A2C"/>
+    </linearGradient>
+    <radialGradient id="moon" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#FFF4D6"/><stop offset=".6" stop-color="#FFF4D6" stop-opacity=".25"/><stop offset="1" stop-color="#FFF4D6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="window" cx=".5" cy=".5" r=".6">
+      <stop offset="0" stop-color="#FFE7A8"/><stop offset="1" stop-color="#E6A23C"/>
+    </radialGradient>
+    <linearGradient id="tree" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2E7A49"/><stop offset="1" stop-color="#15462A"/>
+    </linearGradient>
+  </defs>
+  <rect width="860" height="440" fill="url(#night)"/>
+  <circle cx="720" cy="80" r="70" fill="url(#moon)"/>
+  <circle cx="720" cy="80" r="26" fill="#FFF4D6"/>
+  <g fill="#FFF6DA">
+    <circle cx="470" cy="60" r="1.8"/><circle cx="540" cy="120" r="1.3"/><circle cx="600" cy="40" r="1.6"/>
+    <circle cx="820" cy="150" r="1.5"/><circle cx="640" cy="170" r="1.2"/><circle cx="790" cy="30" r="1.3"/>
+  </g>
+  <!-- far hills -->
+  <path d="M0 340 Q 260 290 520 300 Q 660 300 860 280 L860 440 L0 440 Z" fill="#0E3F25"/>
+  <!-- background pines -->
+  <g fill="#103F26">
+    <path d="M430 340 L465 220 L500 340 Z"/><path d="M780 330 L815 200 L850 330 Z"/><path d="M500 345 L528 250 L556 345 Z"/>
+  </g>
+  <!-- cabin -->
+  <g>
+    <rect x="575" y="260" width="170" height="105" fill="#5A3A24"/>
+    <g stroke="#4A2F1C" stroke-width="3">
+      <line x1="575" y1="285" x2="745" y2="285"/><line x1="575" y1="310" x2="745" y2="310"/><line x1="575" y1="335" x2="745" y2="335"/>
+    </g>
+    <path d="M560 266 L660 196 L760 266 Z" fill="#3B2617"/>
+    <path d="M552 270 L660 190 L768 270 L752 274 L660 206 L568 274 Z" fill="#F2F6F2"/>
+    <rect x="705" y="205" width="18" height="40" fill="#4A2F1C"/>
+    <rect x="701" y="198" width="26" height="10" fill="#F2F6F2"/>
+    <rect x="598" y="290" width="38" height="34" rx="3" fill="url(#window)"/>
+    <rect x="684" y="290" width="38" height="34" rx="3" fill="url(#window)"/>
+    <path d="M617 290 V324 M598 307 H636 M703 290 V324 M684 307 H722" stroke="#5A3A24" stroke-width="3"/>
+    <rect x="645" y="305" width="30" height="60" rx="3" fill="#7A4E2E"/>
+    <circle cx="668" cy="336" r="2.5" fill="#F5C66B"/>
+    <!-- wreath -->
+    <circle cx="660" cy="290" r="10" fill="none" stroke="#2E7A49" stroke-width="6"/>
+    <circle cx="660" cy="299" r="3" fill="#E86A4F"/>
+    <!-- garland lights along the roof -->
+    <g fill="#F5C66B"><circle cx="585" cy="262" r="3"/><circle cx="610" cy="244" r="3" fill="#E86A4F"/><circle cx="635" cy="226" r="3"/>
+      <circle cx="685" cy="226" r="3" fill="#8FD18A"/><circle cx="710" cy="244" r="3"/><circle cx="735" cy="262" r="3" fill="#E86A4F"/></g>
+  </g>
+  <!-- foreground pines -->
+  <g fill="url(#tree)">
+    <path d="M760 380 L790 330 L780 330 L805 290 L795 290 L815 255 L835 290 L825 290 L850 330 L840 330 L870 380 Z"/>
+    <path d="M470 385 L505 330 L493 330 L520 290 L509 290 L532 252 L555 290 L544 290 L571 330 L559 330 L594 385 Z"/>
+  </g>
+  <g fill="#F2F6F2" opacity=".9">
+    <path d="M509 290 L532 252 L555 290 L540 284 L532 292 L524 284 Z"/>
+    <path d="M795 290 L815 255 L835 290 L822 284 L815 292 L808 284 Z"/>
+  </g>
+  <!-- snow ground -->
+  <path d="M0 380 Q 300 350 560 362 Q 720 368 860 352 L860 440 L0 440 Z" fill="#E9F0EA"/>
+  <path d="M0 402 Q 500 384 860 392 L860 440 L0 440 Z" fill="#D7E2DA"/>
+  <!-- falling snow -->
+  <g fill="#FFFFFF" opacity=".75">
+    <circle cx="500" cy="180" r="2.2"/><circle cx="560" cy="90" r="1.6"/><circle cx="620" cy="140" r="2"/>
+    <circle cx="690" cy="160" r="1.5"/><circle cx="760" cy="220" r="2.2"/><circle cx="840" cy="100" r="1.8"/>
+    <circle cx="455" cy="260" r="1.6"/><circle cx="800" cy="260" r="1.4"/>
+  </g>
+</svg>

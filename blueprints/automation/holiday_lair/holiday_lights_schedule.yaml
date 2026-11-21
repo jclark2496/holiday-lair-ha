@@ -1,0 +1,94 @@
+blueprint:
+  name: Holiday Lair - holiday lights on/off schedule
+  description: >-
+    Turns a light on at sunset (with an optional offset) or at a fixed time, and off
+    at a fixed time. Optionally only runs while a toggle helper (input_boolean) is on,
+    so you can switch the whole schedule off after the holidays.
+  domain: automation
+  input:
+    holiday_light:
+      name: Holiday light
+      description: The light or light group to schedule.
+      selector:
+        entity:
+          filter:
+            - domain: light
+    on_mode:
+      name: Turn on at
+      default: sunset
+      selector:
+        select:
+          options:
+            - label: Sunset (plus offset)
+              value: sunset
+            - label: Fixed time
+              value: time
+    sunset_offset:
+      name: Sunset offset
+      description: Used when "Turn on at" is Sunset. Negative means before sunset.
+      default: "00:00:00"
+      selector:
+        text: {}
+    on_time:
+      name: On time
+      description: Used when "Turn on at" is Fixed time.
+      default: "17:00:00"
+      selector:
+        time: {}
+    off_time:
+      name: Off time
+      default: "22:30:00"
+      selector:
+        time: {}
+    enabled_toggle:
+      name: Enabled toggle (optional)
+      description: An input_boolean that must be on for the schedule to run. Leave empty to always run.
+      default: []
+      selector:
+        entity:
+          multiple: true
+          filter:
+            - domain: input_boolean
+
+mode: single
+
+variables:
+  on_mode: !input on_mode
+  enabled_toggle: !input enabled_toggle
+
+triggers:
+  - trigger: sun
+    event: sunset
+    offset: !input sunset_offset
+    id: sunset_on
+  - trigger: time
+    at: !input on_time
+    id: time_on
+  - trigger: time
+    at: !input off_time
+    id: time_off
+
+conditions:
+  - condition: template
+    value_template: >-
+      {{ enabled_toggle | length == 0 or
+         enabled_toggle | select('is_state', 'on') | list | length == enabled_toggle | length }}
+
+actions:
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: >-
+              {{ (trigger.id == 'sunset_on' and on_mode == 'sunset') or
+                 (trigger.id == 'time_on' and on_mode == 'time') }}
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: !input holiday_light
+      - conditions:
+          - condition: trigger
+            id: time_off
+        sequence:
+          - action: light.turn_off
+            target:
+              entity_id: !input holiday_light

@@ -1,0 +1,74 @@
+blueprint:
+  name: Holiday Lair - play a sound when the tree lights turn on
+  description: >-
+    Plays a short sound on a speaker whenever a light (for example your tree lights)
+    turns on. Bring your own clip: put an audio file you own, or have the rights to,
+    in /media (it shows up under "My media") and pick it below. No audio ships with
+    this blueprint.
+  domain: automation
+  input:
+    tree_light:
+      name: Tree light
+      description: The light or light group that should trigger the sound.
+      selector:
+        entity:
+          filter:
+            - domain: light
+    speaker:
+      name: Speaker
+      description: Media player that plays the sound.
+      selector:
+        entity:
+          filter:
+            - domain: media_player
+    sound:
+      name: Sound
+      description: Your own clip from My media (or another media source).
+      selector:
+        media:
+          accept:
+            - audio/*
+    volume:
+      name: Announcement volume
+      description: Volume used for the clip (0-100). Only some speakers honor this.
+      default: 40
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 1
+          unit_of_measurement: "%"
+          mode: slider
+    announce:
+      name: Play as announcement
+      description: >-
+        On: duck or pause what is playing and resume afterwards (speakers that support
+        announcements). Off: play it as normal media.
+      default: true
+      selector:
+        boolean: {}
+
+mode: single
+max_exceeded: silent
+
+triggers:
+  - trigger: state
+    entity_id: !input tree_light
+    from: "off"
+    to: "on"
+
+variables:
+  sound_input: !input sound
+  volume_input: !input volume
+  announce_input: !input announce
+
+actions:
+  - action: media_player.play_media
+    target:
+      entity_id: !input speaker
+    data:
+      media_content_id: "{{ sound_input.media_content_id if sound_input is mapping else sound_input }}"
+      media_content_type: "{{ sound_input.media_content_type if sound_input is mapping else 'music' }}"
+      announce: "{{ announce_input }}"
+      extra:
+        volume: "{{ volume_input | int }}"

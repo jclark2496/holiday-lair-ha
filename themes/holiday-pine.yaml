@@ -1,0 +1,61 @@
+# Holiday Pine - dark-only theme for the Holiday Lair dashboard.
+# Install: put this file in /config/themes/ and make sure configuration.yaml has
+#   frontend:
+#     themes: !include_dir_merge_named themes
+# then restart Home Assistant (or run the frontend.reload_themes action).
+# There are no light/dark "modes" on purpose: the colors stay dark even when the
+# phone is in light mode, so light text never lands on a light card.
+holiday-pine:
+  # Page and cards
+  primary-background-color: "#062617"
+  secondary-background-color: "#0A321F"
+  lovelace-background: "linear-gradient(180deg,#062617 0%,#0a321f 58%,#061f15 100%)"
+  card-background-color: "#103D2B"
+  ha-card-background: "#103D2B"
+  ha-card-border-radius: "20px"
+  ha-card-border-width: "0px"
+  ha-card-box-shadow: "0 8px 18px rgba(0,0,0,.18)"
+  divider-color: "rgba(244,240,228,.12)"
+
+  # Text (WCAG contrast on #103D2B: primary 10.7:1, secondary 9.8:1, muted #C9D3C6 7.9:1)
+  primary-text-color: "#F4F0E4"
+  secondary-text-color: "#E9E6DC"
+  text-primary-color: "#F4F0E4"
+  disabled-text-color: "#9FB09B"
+  rgb-primary-text-color: "244, 240, 228"
+  rgb-secondary-text-color: "233, 230, 220"
+
+  # Accent: warm gold
+  primary-color: "#D3A855"
+  accent-color: "#D3A855"
+  rgb-primary-color: "211, 168, 85"
+  rgb-accent-color: "211, 168, 85"
+  state-icon-color: "#C9D3C6"
+  state-icon-active-color: "#F5C66B"
+  state-light-active-color: "#F5C66B"
+  paper-item-icon-color: "#C9D3C6"
+  paper-item-icon-active-color: "#F5C66B"
+
+  # Header / sidebar (visible when kiosk mode is off)
+  app-header-background-color: "#031B11"
+  app-header-text-color: "#F4F0E4"
+  sidebar-background-color: "#031B11"
+  sidebar-text-color: "#E9E6DC"
+  sidebar-icon-color: "#C9D3C6"
+  sidebar-selected-text-color: "#F5C66B"
+  sidebar-selected-icon-color: "#F5C66B"
+
+  # Inputs, sliders, switches
+  input-fill-color: "#0B3322"
+  input-ink-color: "#F4F0E4"
+  input-label-ink-color: "#C9D3C6"
+  slider-color: "#D3A855"
+  slider-track-color: "rgba(244,240,228,.20)"
+  switch-checked-color: "#D3A855"
+
+  # Mushroom
+  mush-rgb-state-light: "245, 198, 107"
+  mush-card-primary-font-weight: "680"
+  mush-card-secondary-font-weight: "600"
+  mush-icon-border-radius: "14px"
+  mush-control-border-radius: "999px"

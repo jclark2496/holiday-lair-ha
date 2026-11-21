@@ -1,0 +1,977 @@
+# Holiday Lair - a dark pine-green holiday dashboard for Home Assistant.
+# Paste into: Settings > Dashboards > (new dashboard, URL "holiday-lair") > Edit > Raw configuration editor.
+# Replace the placeholder entity IDs with your own (see SETUP.md). Requires the HACS cards listed in SETUP.md.
+# Art: copy assets/ to /config/www/holiday-lair/ (served as /local/holiday-lair/...).
+# Theme: themes/holiday-pine.yaml. Every view sets theme: holiday-pine.
+title: Holiday Lair
+kiosk_mode:
+  mobile_settings:
+    hide_header: true
+    kiosk: true
+button_card_templates:
+  hl_base:
+    styles:
+      card:
+        - font-family: "-apple-system,BlinkMacSystemFont,\"SF Pro Text\",Inter,system-ui,sans-serif"
+        - border: none
+        - box-shadow: "0 8px 18px rgba(0,0,0,.18)"
+  hl_header:
+    template: hl_base
+    show_icon: false
+    show_name: false
+    variables:
+      title: Room
+      subtitle: ""
+      back: "/holiday-lair/home"
+      art: "/local/holiday-lair/header-pines.svg"
+    tap_action:
+      action: navigate
+      navigation_path: "[[[ return variables.back ]]]"
+    hold_action:
+      action: none
+    custom_fields:
+      h: "[[[ return `<div class=\"head\"><div class=\"back\"><ha-icon icon=\"mdi:chevron-left\"></ha-icon></div><div><div class=\"title\">${variables.title}</div><div class=\"sub\">${variables.subtitle}</div></div></div>`; ]]]"
+    styles:
+      card:
+        - height: "116px"
+        - padding: "12px 16px"
+        - border-radius: "0 0 20px 20px"
+        - background: "[[[ return `linear-gradient(90deg,rgba(3,29,18,.98) 0%,rgba(3,29,18,.90) 42%,rgba(3,29,18,.25) 72%,rgba(3,29,18,.05) 100%),url(${variables.art}) right center/cover no-repeat` ]]]"
+        - margin-bottom: "14px"
+      grid:
+        - grid-template-areas: "\"h\""
+    extra_styles: |
+      .head{display:grid;grid-template-columns:42px minmax(0,1fr);gap:11px;align-items:center;text-align:left}
+      .back{width:40px;height:40px;border-radius:13px;background:linear-gradient(145deg,#245D3D,#17472F);display:flex;align-items:center;justify-content:center;color:#F4F0E4;border:1px solid rgba(211,168,85,.52)}
+      .back ha-icon{--mdc-icon-size:27px}
+      .title{font-size:27px;line-height:1;font-weight:740;letter-spacing:-.7px;color:#F4F0E4}
+      .sub{margin-top:4px;font-size:12.5px;font-weight:560;color:#C9D3C6}
+  hl_tile:
+    template: hl_base
+    variables:
+      path: "/holiday-lair/home"
+    show_label: true
+    tap_action:
+      action: navigate
+      navigation_path: "[[[ return variables.path ]]]"
+    hold_action:
+      action: none
+    styles:
+      card:
+        - height: "92px"
+        - padding: "12px"
+        - border-radius: "18px"
+        - background: "linear-gradient(145deg,rgba(31,83,54,.92),rgba(16,61,43,.96))"
+      grid:
+        - grid-template-areas: "\"i\" \"n\" \"l\""
+        - grid-template-rows: "32px auto auto"
+        - justify-items: start
+      icon:
+        - width: "26px"
+        - color: "#D3A855"
+      name:
+        - font-size: "15px"
+        - font-weight: "700"
+        - color: "#F4F0E4"
+      label:
+        - font-size: "12px"
+        - font-weight: "560"
+        - color: "#C9D3C6"
+  hl_toggle:
+    template: hl_tile
+    tap_action:
+      action: toggle
+    hold_action:
+      action: more-info
+    label: "[[[ return entity ? (entity.state === 'on' ? 'On' : entity.state === 'off' ? 'Off' : 'Unavailable') : 'Missing entity' ]]]"
+    state:
+      - value: "on"
+        styles:
+          card:
+            - background: "linear-gradient(145deg,#C99A3E,#A8761F)"
+          icon:
+            - color: "#1B140A"
+          name:
+            - color: "#1B140A"
+          label:
+            - color: "#1B140A"
+  hl_scene:
+    template: hl_tile
+    tap_action:
+      action: perform-action
+      perform_action: scene.turn_on
+      target:
+        entity_id: "[[[ return entity.entity_id ]]]"
+    hold_action:
+      action: more-info
+    show_label: false
+    styles:
+      card:
+        - height: "78px"
+  hl_section:
+    show_icon: false
+    show_name: true
+    tap_action:
+      action: none
+    hold_action:
+      action: none
+    styles:
+      card:
+        - background: transparent
+        - border: none
+        - box-shadow: none
+        - padding: "14px 4px 6px"
+      name:
+        - justify-self: start
+        - font-size: "19px"
+        - font-weight: "740"
+        - color: "#F4F0E4"
+        - font-family: "-apple-system,BlinkMacSystemFont,\"SF Pro Text\",Inter,system-ui,sans-serif"
+  hl_action:
+    template: hl_base
+    show_label: false
+    styles:
+      card:
+        - height: "64px"
+        - border-radius: "16px"
+        - padding: "8px"
+        - background: "rgba(16,61,43,.96)"
+      icon:
+        - width: "22px"
+        - color: "#D3A855"
+      name:
+        - font-size: "13px"
+        - font-weight: "680"
+        - color: "#F4F0E4"
+views:
+  - title: Holiday Lair
+    path: home
+    icon: "mdi:pine-tree"
+    theme: holiday-pine
+    type: "custom:grid-layout"
+    background: "radial-gradient(circle at 88% 7%,rgba(104,159,78,.20),transparent 30%),radial-gradient(circle at 12% 74%,rgba(195,155,51,.07),transparent 28%),linear-gradient(180deg,#062617 0%,#0a321f 58%,#061f15 100%)"
+    layout:
+      grid-template-columns: "minmax(0, 430px)"
+      justify-content: center
+      margin: "0"
+      padding: "0 0 28px"
+      grid-gap: "0"
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: "custom:button-card"
+            template: hl_base
+            show_icon: false
+            show_name: false
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            custom_fields:
+              greeting: "[[[ const h=new Date().getHours(); const sal=h<12?'Good morning,':h<17?'Good afternoon,':'Good evening,'; const who=((typeof user!=='undefined'&&user&&user.name)||'friend').split(' ')[0]; return `<div class=\"sal\">${sal}</div><div class=\"who\">${who}</div>`; ]]]"
+              lair: Holiday Lair
+              menu:
+                card:
+                  type: "custom:button-card"
+                  icon: "mdi:cog-outline"
+                  show_name: false
+                  tap_action:
+                    action: navigate
+                    navigation_path: "/holiday-lair/menu"
+                  styles:
+                    card:
+                      - height: "44px"
+                      - width: "44px"
+                      - border-radius: "50%"
+                      - background: "rgba(8,30,20,.85)"
+                      - border: none
+                      - padding: "10px"
+                    icon:
+                      - color: "#F4F0E4"
+                      - width: "24px"
+            styles:
+              card:
+                - height: "220px"
+                - padding: "18px 20px"
+                - border-radius: "0"
+                - box-shadow: none
+                - background: "linear-gradient(90deg,#031b11 0%,#031b11 38%,rgba(3,29,18,.85) 52%,rgba(3,27,17,.05) 78%),url(/local/holiday-lair/hero-cabin.svg) right center/cover no-repeat"
+                - position: relative
+              grid:
+                - grid-template-areas: "\"greeting\" \"lair\""
+                - grid-template-columns: "minmax(0, 58%)"
+                - align-content: start
+                - justify-items: start
+                - row-gap: "12px"
+              custom_fields:
+                greeting:
+                  - color: "#FFFDF4"
+                  - text-align: left
+                  - text-shadow: "0 2px 8px rgba(0,0,0,.34)"
+                lair:
+                  - color: "#D3A855"
+                  - font-size: "18px"
+                  - font-weight: "650"
+                menu:
+                  - position: absolute
+                  - right: "14px"
+                  - top: "max(14px, env(safe-area-inset-top))"
+            extra_styles: |
+              .sal{font-size:20px;font-weight:550;line-height:1.3}
+              .who{font-size:34px;font-weight:760;line-height:1.1;margin-top:4px;overflow-wrap:anywhere}
+          - type: "custom:mod-card"
+            card_mod:
+              style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px !important; margin-top: -26px !important; position: relative; z-index: 2; }"
+            card:
+              type: "custom:button-card"
+              show_icon: false
+              show_name: false
+              tap_action:
+                action: navigate
+                navigation_path: "/holiday-lair/security"
+              hold_action:
+                action: none
+              custom_fields:
+                weather: "[[[ const t=states['weather.home']?.attributes?.temperature; return `<b>${(t===undefined||t===null)?'—':Math.round(t)+'°'}</b><small>Outside</small>`; ]]]"
+                alarm: "[[[ const s=states['alarm_control_panel.alarm']?.state; const l=s==='armed_home'?'Armed home':s==='armed_away'?'Armed away':s==='disarmed'?'Disarmed':s?String(s).replaceAll('_',' '):'Unknown'; return `<b>${l}</b><small>Alarm</small>`; ]]]"
+                locks: "[[[ const ids=['lock.front_door_lock', 'lock.back_door_lock']; const v=ids.map(i=>states[i]).filter(x=>x&&!['unknown','unavailable'].includes(x.state)); const n=v.filter(x=>x.state==='locked').length; return `<b>${v.length?n+' of '+v.length:'—'}</b><small>Locked</small>`; ]]]"
+              styles:
+                card:
+                  - height: "56px"
+                  - background: "#FFFDF7"
+                  - border: none
+                  - border-radius: "17px"
+                  - box-shadow: "0 5px 8px rgba(0,17,8,.22)"
+                  - font-family: "-apple-system,BlinkMacSystemFont,\"SF Pro Text\",Inter,system-ui,sans-serif"
+                grid:
+                  - grid-template-areas: "\"weather alarm locks\""
+                  - grid-template-columns: "1fr 1fr 1fr"
+                custom_fields:
+                  weather:
+                    - color: "#18221B"
+                    - font-size: "14px"
+                    - line-height: "1.15"
+                  alarm:
+                    - color: "#18221B"
+                    - font-size: "14px"
+                    - line-height: "1.15"
+                  locks:
+                    - color: "#18221B"
+                    - font-size: "14px"
+                    - line-height: "1.15"
+              extra_styles: |
+                b{display:block;font-weight:760}
+                small{display:block;font-size:11px;color:#4F5A51;margin-top:3px;font-weight:600}
+          - type: "custom:mod-card"
+            card_mod:
+              style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 0 !important; }"
+            card:
+              type: "custom:button-card"
+              template: hl_section
+              name: "Scenes & holiday"
+          - type: "custom:mod-card"
+            card_mod:
+              style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 0 !important; }"
+            card:
+              type: grid
+              columns: 4
+              square: false
+              cards:
+                - type: "custom:button-card"
+                  template: hl_scene
+                  entity: scene.cozy_evening
+                  name: Cozy
+                  icon: "mdi:sofa-outline"
+                - type: "custom:button-card"
+                  template: hl_scene
+                  entity: scene.holiday_party
+                  name: Party
+                  icon: "mdi:party-popper"
+                - type: "custom:button-card"
+                  template: hl_scene
+                  entity: scene.goodnight
+                  name: Night
+                  icon: "mdi:weather-night"
+                - type: "custom:button-card"
+                  template: hl_toggle
+                  entity: light.tree_lights
+                  name: Tree
+                  icon: "mdi:pine-tree"
+          - type: "custom:mod-card"
+            card_mod:
+              style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 0 !important; }"
+            card:
+              type: "custom:button-card"
+              template: hl_tile
+              name: Talk to Assist
+              icon: "mdi:microphone"
+              label: Tap to talk
+              tap_action:
+                action: assist
+                start_listening: true
+              styles:
+                card:
+                  - height: "64px"
+                grid:
+                  - grid-template-areas: "\"i n\" \"i l\""
+                  - grid-template-columns: "40px 1fr"
+                  - grid-template-rows: auto auto
+                name:
+                  - justify-self: start
+                label:
+                  - justify-self: start
+          - type: "custom:mod-card"
+            card_mod:
+              style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 0 !important; }"
+            card:
+              type: "custom:button-card"
+              template: hl_section
+              name: Home
+          - type: "custom:mod-card"
+            card_mod:
+              style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 24px !important; }"
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: "custom:button-card"
+                  template: hl_tile
+                  name: Lights
+                  label: "Rooms & holiday"
+                  icon: "mdi:lightbulb-group"
+                  variables:
+                    path: "/holiday-lair/lights"
+                - type: "custom:button-card"
+                  template: hl_tile
+                  name: Security
+                  label: "Alarm & locks"
+                  icon: "mdi:shield-home"
+                  variables:
+                    path: "/holiday-lair/security"
+                - type: "custom:button-card"
+                  template: hl_tile
+                  name: Music
+                  label: Speakers
+                  icon: "mdi:music"
+                  variables:
+                    path: "/holiday-lair/music"
+                - type: "custom:button-card"
+                  template: hl_tile
+                  name: Climate
+                  label: Thermostat
+                  icon: "mdi:thermostat"
+                  variables:
+                    path: "/holiday-lair/climate"
+  - title: Lights
+    path: lights
+    icon: "mdi:lightbulb-group"
+    theme: holiday-pine
+    type: "custom:grid-layout"
+    background: "radial-gradient(circle at 88% 7%,rgba(104,159,78,.20),transparent 30%),radial-gradient(circle at 12% 74%,rgba(195,155,51,.07),transparent 28%),linear-gradient(180deg,#062617 0%,#0a321f 58%,#061f15 100%)"
+    layout:
+      grid-template-columns: "minmax(0, 430px)"
+      justify-content: center
+      margin: "0"
+      padding: "0 0 28px"
+      grid-gap: "0"
+    cards:
+      - type: "custom:button-card"
+        template: hl_header
+        variables:
+          title: Lights
+          subtitle: Choose a room
+          back: "/holiday-lair/home"
+          art: "/local/holiday-lair/header-pines.svg"
+      - type: "custom:mod-card"
+        card_mod:
+          style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 0 !important; }"
+        card:
+          type: grid
+          columns: 2
+          square: false
+          cards:
+            - type: "custom:button-card"
+              template: hl_tile
+              name: Living Room
+              label: "3 lights"
+              icon: "mdi:sofa"
+              variables:
+                path: "/holiday-lair/living-room"
+            - type: "custom:button-card"
+              template: hl_tile
+              name: Kitchen
+              label: "3 lights"
+              icon: "mdi:silverware-fork-knife"
+              variables:
+                path: "/holiday-lair/kitchen"
+      - type: "custom:mod-card"
+        card_mod:
+          style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 0 !important; }"
+        card:
+          type: "custom:button-card"
+          template: hl_section
+          name: "Holiday & outdoors"
+      - type: "custom:mod-card"
+        card_mod:
+          style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 24px !important; }"
+        card:
+          type: grid
+          columns: 2
+          square: false
+          cards:
+            - type: "custom:button-card"
+              template: hl_toggle
+              entity: light.tree_lights
+              name: Tree lights
+              icon: "mdi:pine-tree"
+            - type: "custom:button-card"
+              template: hl_toggle
+              entity: light.front_porch
+              name: Porch
+              icon: "mdi:outdoor-lamp"
+  - title: Living Room
+    path: living-room
+    icon: "mdi:sofa"
+    theme: holiday-pine
+    type: "custom:grid-layout"
+    background: "radial-gradient(circle at 88% 7%,rgba(104,159,78,.20),transparent 30%),radial-gradient(circle at 12% 74%,rgba(195,155,51,.07),transparent 28%),linear-gradient(180deg,#062617 0%,#0a321f 58%,#061f15 100%)"
+    layout:
+      grid-template-columns: "minmax(0, 430px)"
+      justify-content: center
+      margin: "0"
+      padding: "0 0 28px"
+      grid-gap: "0"
+    cards:
+      - type: "custom:button-card"
+        template: hl_header
+        variables:
+          title: Living Room
+          subtitle: Comfort lights
+          back: "/holiday-lair/lights"
+          art: "/local/holiday-lair/header-pines.svg"
+      - type: "custom:mod-card"
+        card_mod:
+          style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 24px !important; }"
+        card:
+          type: grid
+          columns: 2
+          square: false
+          cards:
+            - type: "custom:mushroom-light-card"
+              entity: light.living_room_main
+              name: Overhead
+              icon: "mdi:ceiling-light"
+              use_light_color: true
+              show_brightness_control: true
+              fill_container: true
+              tap_action:
+                action: toggle
+              hold_action:
+                action: more-info
+              card_mod:
+                style: |
+                  ha-card {
+                    background: #103D2B !important;
+                    border: none !important;
+                    border-radius: 20px !important;
+                    --primary-text-color: #F4F0E4;
+                    --secondary-text-color: #E9E6DC;
+                    --rgb-primary-text-color: 244, 240, 228;
+                    --rgb-secondary-text-color: 233, 230, 220;
+                  }
+            - type: "custom:mushroom-light-card"
+              entity: light.living_room_lamp
+              name: Lamp
+              icon: "mdi:floor-lamp"
+              use_light_color: true
+              show_brightness_control: true
+              fill_container: true
+              tap_action:
+                action: toggle
+              hold_action:
+                action: more-info
+              card_mod:
+                style: |
+                  ha-card {
+                    background: #103D2B !important;
+                    border: none !important;
+                    border-radius: 20px !important;
+                    --primary-text-color: #F4F0E4;
+                    --secondary-text-color: #E9E6DC;
+                    --rgb-primary-text-color: 244, 240, 228;
+                    --rgb-secondary-text-color: 233, 230, 220;
+                  }
+            - type: "custom:mushroom-light-card"
+              entity: light.living_room_accent
+              name: Accent
+              icon: "mdi:led-strip-variant"
+              use_light_color: true
+              show_brightness_control: true
+              fill_container: true
+              tap_action:
+                action: toggle
+              hold_action:
+                action: more-info
+              card_mod:
+                style: |
+                  ha-card {
+                    background: #103D2B !important;
+                    border: none !important;
+                    border-radius: 20px !important;
+                    --primary-text-color: #F4F0E4;
+                    --secondary-text-color: #E9E6DC;
+                    --rgb-primary-text-color: 244, 240, 228;
+                    --rgb-secondary-text-color: 233, 230, 220;
+                  }
+            - type: "custom:mushroom-light-card"
+              entity: light.tree_lights
+              name: Tree
+              icon: "mdi:pine-tree"
+              use_light_color: true
+              show_brightness_control: true
+              fill_container: true
+              tap_action:
+                action: toggle
+              hold_action:
+                action: more-info
+              card_mod:
+                style: |
+                  ha-card {
+                    background: #103D2B !important;
+                    border: none !important;
+                    border-radius: 20px !important;
+                    --primary-text-color: #F4F0E4;
+                    --secondary-text-color: #E9E6DC;
+                    --rgb-primary-text-color: 244, 240, 228;
+                    --rgb-secondary-text-color: 233, 230, 220;
+                  }
+    subview: true
+  - title: Kitchen
+    path: kitchen
+    icon: "mdi:silverware-fork-knife"
+    theme: holiday-pine
+    type: "custom:grid-layout"
+    background: "radial-gradient(circle at 88% 7%,rgba(104,159,78,.20),transparent 30%),radial-gradient(circle at 12% 74%,rgba(195,155,51,.07),transparent 28%),linear-gradient(180deg,#062617 0%,#0a321f 58%,#061f15 100%)"
+    layout:
+      grid-template-columns: "minmax(0, 430px)"
+      justify-content: center
+      margin: "0"
+      padding: "0 0 28px"
+      grid-gap: "0"
+    cards:
+      - type: "custom:button-card"
+        template: hl_header
+        variables:
+          title: Kitchen
+          subtitle: Cooking and gathering
+          back: "/holiday-lair/lights"
+          art: "/local/holiday-lair/header-pines.svg"
+      - type: "custom:mod-card"
+        card_mod:
+          style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 24px !important; }"
+        card:
+          type: grid
+          columns: 2
+          square: false
+          cards:
+            - type: "custom:mushroom-light-card"
+              entity: light.kitchen
+              name: Main
+              icon: "mdi:ceiling-light"
+              use_light_color: true
+              show_brightness_control: true
+              fill_container: true
+              tap_action:
+                action: toggle
+              hold_action:
+                action: more-info
+              card_mod:
+                style: |
+                  ha-card {
+                    background: #103D2B !important;
+                    border: none !important;
+                    border-radius: 20px !important;
+                    --primary-text-color: #F4F0E4;
+                    --secondary-text-color: #E9E6DC;
+                    --rgb-primary-text-color: 244, 240, 228;
+                    --rgb-secondary-text-color: 233, 230, 220;
+                  }
+            - type: "custom:mushroom-light-card"
+              entity: light.kitchen_island
+              name: Island
+              icon: "mdi:light-recessed"
+              use_light_color: true
+              show_brightness_control: true
+              fill_container: true
+              tap_action:
+                action: toggle
+              hold_action:
+                action: more-info
+              card_mod:
+                style: |
+                  ha-card {
+                    background: #103D2B !important;
+                    border: none !important;
+                    border-radius: 20px !important;
+                    --primary-text-color: #F4F0E4;
+                    --secondary-text-color: #E9E6DC;
+                    --rgb-primary-text-color: 244, 240, 228;
+                    --rgb-secondary-text-color: 233, 230, 220;
+                  }
+            - type: "custom:mushroom-light-card"
+              entity: light.kitchen_counter
+              name: Counter
+              icon: "mdi:led-strip"
+              use_light_color: true
+              show_brightness_control: true
+              fill_container: true
+              tap_action:
+                action: toggle
+              hold_action:
+                action: more-info
+              card_mod:
+                style: |
+                  ha-card {
+                    background: #103D2B !important;
+                    border: none !important;
+                    border-radius: 20px !important;
+                    --primary-text-color: #F4F0E4;
+                    --secondary-text-color: #E9E6DC;
+                    --rgb-primary-text-color: 244, 240, 228;
+                    --rgb-secondary-text-color: 233, 230, 220;
+                  }
+    subview: true
+  - title: Security
+    path: security
+    icon: "mdi:shield-home"
+    theme: holiday-pine
+    type: "custom:grid-layout"
+    background: "radial-gradient(circle at 88% 7%,rgba(104,159,78,.20),transparent 30%),radial-gradient(circle at 12% 74%,rgba(195,155,51,.07),transparent 28%),linear-gradient(180deg,#062617 0%,#0a321f 58%,#061f15 100%)"
+    layout:
+      grid-template-columns: "minmax(0, 430px)"
+      justify-content: center
+      margin: "0"
+      padding: "0 0 28px"
+      grid-gap: "0"
+    cards:
+      - type: "custom:button-card"
+        template: hl_header
+        variables:
+          title: Security
+          subtitle: Alarm and locks
+          back: "/holiday-lair/home"
+          art: "/local/holiday-lair/header-pines.svg"
+      - type: "custom:mod-card"
+        card_mod:
+          style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 0 !important; }"
+        card:
+          type: "custom:button-card"
+          template: hl_section
+          name: Alarm
+      - type: "custom:mod-card"
+        card_mod:
+          style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 0 !important; }"
+        card:
+          type: grid
+          columns: 3
+          square: false
+          cards:
+            - type: "custom:button-card"
+              template: hl_action
+              entity: alarm_control_panel.alarm
+              name: Disarm
+              icon: "mdi:shield-off-outline"
+              show_state: false
+              tap_action:
+                action: perform-action
+                perform_action: alarm_control_panel.alarm_disarm
+                target:
+                  entity_id: alarm_control_panel.alarm
+              hold_action:
+                action: more-info
+              state:
+                - value: disarmed
+                  styles:
+                    card:
+                      - background: "linear-gradient(145deg,#C99A3E,#A8761F)"
+                    icon:
+                      - color: "#1B140A"
+                    name:
+                      - color: "#1B140A"
+            - type: "custom:button-card"
+              template: hl_action
+              entity: alarm_control_panel.alarm
+              name: Home
+              icon: "mdi:shield-home"
+              show_state: false
+              tap_action:
+                action: perform-action
+                perform_action: alarm_control_panel.alarm_arm_home
+                target:
+                  entity_id: alarm_control_panel.alarm
+              hold_action:
+                action: more-info
+              state:
+                - value: armed_home
+                  styles:
+                    card:
+                      - background: "linear-gradient(145deg,#C99A3E,#A8761F)"
+                    icon:
+                      - color: "#1B140A"
+                    name:
+                      - color: "#1B140A"
+            - type: "custom:button-card"
+              template: hl_action
+              entity: alarm_control_panel.alarm
+              name: Away
+              icon: "mdi:shield-lock"
+              show_state: false
+              tap_action:
+                action: perform-action
+                perform_action: alarm_control_panel.alarm_arm_away
+                target:
+                  entity_id: alarm_control_panel.alarm
+              hold_action:
+                action: more-info
+              state:
+                - value: armed_away
+                  styles:
+                    card:
+                      - background: "linear-gradient(145deg,#C99A3E,#A8761F)"
+                    icon:
+                      - color: "#1B140A"
+                    name:
+                      - color: "#1B140A"
+      - type: "custom:mod-card"
+        card_mod:
+          style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 0 !important; }"
+        card:
+          type: "custom:button-card"
+          template: hl_section
+          name: Door locks
+      - type: "custom:mod-card"
+        card_mod:
+          style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 0 !important; }"
+        card:
+          type: grid
+          columns: 2
+          square: false
+          cards:
+            - type: "custom:button-card"
+              template: hl_toggle
+              entity: lock.front_door_lock
+              name: Front door
+              icon: "[[[ return entity?.state==='locked' ? 'mdi:lock' : 'mdi:lock-open-variant' ]]]"
+              tap_action:
+                action: more-info
+              label: "[[[ return entity ? entity.state.charAt(0).toUpperCase()+entity.state.slice(1) : 'Missing entity' ]]]"
+              state:
+                - value: unlocked
+                  styles:
+                    card:
+                      - background: "linear-gradient(145deg,#8E2F25,#6E2119)"
+            - type: "custom:button-card"
+              template: hl_toggle
+              entity: lock.back_door_lock
+              name: Back door
+              icon: "[[[ return entity?.state==='locked' ? 'mdi:lock' : 'mdi:lock-open-variant' ]]]"
+              tap_action:
+                action: more-info
+              label: "[[[ return entity ? entity.state.charAt(0).toUpperCase()+entity.state.slice(1) : 'Missing entity' ]]]"
+              state:
+                - value: unlocked
+                  styles:
+                    card:
+                      - background: "linear-gradient(145deg,#8E2F25,#6E2119)"
+      - type: "custom:mod-card"
+        card_mod:
+          style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 24px !important; }"
+        card:
+          type: "custom:button-card"
+          show_icon: false
+          show_name: false
+          tap_action:
+            action: none
+          styles:
+            card:
+              - height: "120px"
+              - margin-top: "14px"
+              - border: none
+              - border-radius: "20px"
+              - background: "url(/local/holiday-lair/cabin-footer.svg) center/cover no-repeat"
+  - title: Music
+    path: music
+    icon: "mdi:music"
+    theme: holiday-pine
+    type: "custom:grid-layout"
+    background: "radial-gradient(circle at 88% 7%,rgba(104,159,78,.20),transparent 30%),radial-gradient(circle at 12% 74%,rgba(195,155,51,.07),transparent 28%),linear-gradient(180deg,#062617 0%,#0a321f 58%,#061f15 100%)"
+    layout:
+      grid-template-columns: "minmax(0, 430px)"
+      justify-content: center
+      margin: "0"
+      padding: "0 0 28px"
+      grid-gap: "0"
+    cards:
+      - type: "custom:button-card"
+        template: hl_header
+        variables:
+          title: Music
+          subtitle: Players and speakers
+          back: "/holiday-lair/home"
+          art: "/local/holiday-lair/header-pines.svg"
+      - type: "custom:mod-card"
+        card_mod:
+          style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 0 !important; }"
+        card:
+          type: media-control
+          entity: media_player.speaker
+      - type: "custom:mod-card"
+        card_mod:
+          style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 0 !important; }"
+        card:
+          type: "custom:button-card"
+          template: hl_section
+          name: Speakers
+      - type: "custom:mod-card"
+        card_mod:
+          style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 24px !important; }"
+        card:
+          type: grid
+          columns: 2
+          square: false
+          cards:
+            - type: "custom:button-card"
+              template: hl_action
+              entity: media_player.speaker
+              name: Main speaker
+              icon: "mdi:speaker"
+              tap_action:
+                action: more-info
+              state:
+                - value: playing
+                  styles:
+                    icon:
+                      - color: "#F5C66B"
+            - type: "custom:button-card"
+              template: hl_action
+              entity: media_player.speaker_2
+              name: Second speaker
+              icon: "mdi:speaker-wireless"
+              tap_action:
+                action: more-info
+              state:
+                - value: playing
+                  styles:
+                    icon:
+                      - color: "#F5C66B"
+  - title: Climate
+    path: climate
+    icon: "mdi:thermostat"
+    theme: holiday-pine
+    type: "custom:grid-layout"
+    background: "radial-gradient(circle at 88% 7%,rgba(104,159,78,.20),transparent 30%),radial-gradient(circle at 12% 74%,rgba(195,155,51,.07),transparent 28%),linear-gradient(180deg,#062617 0%,#0a321f 58%,#061f15 100%)"
+    layout:
+      grid-template-columns: "minmax(0, 430px)"
+      justify-content: center
+      margin: "0"
+      padding: "0 0 28px"
+      grid-gap: "0"
+    cards:
+      - type: "custom:button-card"
+        template: hl_header
+        variables:
+          title: Climate
+          subtitle: Thermostat
+          back: "/holiday-lair/home"
+          art: "/local/holiday-lair/header-pines.svg"
+      - type: "custom:mod-card"
+        card_mod:
+          style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 24px !important; }"
+        card:
+          type: thermostat
+          entity: climate.thermostat
+          show_current_as_primary: true
+          features:
+            - type: climate-hvac-modes
+              hvac_modes:
+                - "off"
+                - heat
+                - cool
+                - heat_cool
+          card_mod:
+            style: "ha-card { background: #103D2B !important; border: none !important; border-radius: 22px !important; }"
+  - title: Dashboard menu
+    path: menu
+    icon: "mdi:cog-outline"
+    theme: holiday-pine
+    type: "custom:grid-layout"
+    background: "radial-gradient(circle at 88% 7%,rgba(104,159,78,.20),transparent 30%),radial-gradient(circle at 12% 74%,rgba(195,155,51,.07),transparent 28%),linear-gradient(180deg,#062617 0%,#0a321f 58%,#061f15 100%)"
+    layout:
+      grid-template-columns: "minmax(0, 430px)"
+      justify-content: center
+      margin: "0"
+      padding: "0 0 28px"
+      grid-gap: "0"
+    cards:
+      - type: "custom:button-card"
+        template: hl_header
+        variables:
+          title: Menu
+          subtitle: Dashboard shortcuts
+          back: "/holiday-lair/home"
+          art: "/local/holiday-lair/header-pines.svg"
+      - type: "custom:mod-card"
+        card_mod:
+          style: "ha-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 16px 24px !important; }"
+        card:
+          type: vertical-stack
+          cards:
+            - type: "custom:button-card"
+              template: hl_action
+              name: Back to home
+              icon: "mdi:home"
+              tap_action:
+                action: navigate
+                navigation_path: "/holiday-lair/home"
+              styles:
+                card:
+                  - height: "54px"
+                grid:
+                  - grid-template-areas: "\"i n\""
+                  - grid-template-columns: "40px 1fr"
+                name:
+                  - justify-self: start
+            - type: "custom:button-card"
+              template: hl_action
+              name: Show standard navigation
+              icon: "mdi:menu-open"
+              tap_action:
+                action: navigate
+                navigation_path: "/holiday-lair/home?disable_km"
+              styles:
+                card:
+                  - height: "54px"
+                grid:
+                  - grid-template-areas: "\"i n\""
+                  - grid-template-columns: "40px 1fr"
+                name:
+                  - justify-self: start
+            - type: "custom:button-card"
+              template: hl_action
+              name: Settings
+              icon: "mdi:cog-outline"
+              tap_action:
+                action: navigate
+                navigation_path: "/config"
+              styles:
+                card:
+                  - height: "54px"
+                grid:
+                  - grid-template-areas: "\"i n\""
+                  - grid-template-columns: "40px 1fr"
+                name:
+                  - justify-self: start
+            - type: markdown
+              content: "**Show standard navigation** reopens this dashboard with kiosk mode turned off (`?disable_km`), so the header and sidebar come back."
+    subview: true

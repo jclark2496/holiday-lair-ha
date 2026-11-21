@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 240" width="800" height="240">
+  <!-- Holiday Lair header art: original hand-written SVG (pine trees, stars, snow). MIT. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#05301C"/><stop offset="1" stop-color="#0B4026"/>
+    </linearGradient>
+    <linearGradient id="pine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2F7A4A"/><stop offset="1" stop-color="#174A2C"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#FFE3A3" stop-opacity=".9"/><stop offset="1" stop-color="#FFE3A3" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="240" fill="url(#sky)"/>
+  <!-- string lights -->
+  <path d="M300 18 Q 550 70 800 14" fill="none" stroke="#3B2A12" stroke-width="2"/>
+  <g fill="#F5C66B">
+    <circle cx="340" cy="28" r="4"/><circle cx="400" cy="40" r="4" fill="#E86A4F"/><circle cx="460" cy="47" r="4"/>
+    <circle cx="520" cy="50" r="4" fill="#8FD18A"/><circle cx="580" cy="48" r="4"/><circle cx="640" cy="41" r="4" fill="#E86A4F"/>
+    <circle cx="700" cy="31" r="4"/><circle cx="760" cy="21" r="4" fill="#8FD18A"/>
+  </g>
+  <!-- stars -->
+  <g fill="#FFF6DA" opacity=".8">
+    <circle cx="380" cy="90" r="1.6"/><circle cx="455" cy="110" r="1.2"/><circle cx="610" cy="95" r="1.5"/>
+    <circle cx="690" cy="80" r="1.2"/><circle cx="745" cy="120" r="1.6"/><circle cx="540" cy="85" r="1"/>
+  </g>
+  <!-- back row of pines -->
+  <g fill="#123D25">
+    <path d="M430 240 L470 120 L510 240 Z"/><path d="M560 240 L600 105 L640 240 Z"/><path d="M700 240 L745 110 L790 240 Z"/>
+  </g>
+  <!-- front pines with tiers -->
+  <g fill="url(#pine)">
+    <path d="M520 240 L560 175 L545 175 L580 125 L566 125 L595 80 L624 125 L610 125 L645 175 L630 175 L670 240 Z"/>
+    <path d="M640 240 L672 190 L660 190 L688 150 L677 150 L700 115 L723 150 L712 150 L740 190 L728 190 L760 240 Z"/>
+  </g>
+  <!-- star on the tall pine -->
+  <circle cx="595" cy="74" r="18" fill="url(#glow)"/>
+  <path d="M595 62 L598.5 71 L608 71 L600.5 76.5 L603.5 86 L595 80 L586.5 86 L589.5 76.5 L582 71 L591.5 71 Z" fill="#F5C66B"/>
+  <!-- ornaments -->
+  <g>
+    <circle cx="575" cy="160" r="5" fill="#E86A4F"/><circle cx="612" cy="140" r="5" fill="#F5C66B"/>
+    <circle cx="630" cy="200" r="5" fill="#E9E6DC"/><circle cx="560" cy="215" r="5" fill="#F5C66B"/>
+    <circle cx="690" cy="170" r="4" fill="#E86A4F"/><circle cx="715" cy="205" r="4" fill="#F5C66B"/>
+  </g>
+  <!-- snow -->
+  <path d="M300 240 Q 520 214 800 228 L800 240 Z" fill="#E9F0EA" opacity=".85"/>
+  <g fill="#FFFFFF" opacity=".7">
+    <circle cx="420" cy="150" r="2"/><circle cx="500" cy="60" r="1.6"/><circle cx="660" cy="60" r="2"/>
+    <circle cx="770" cy="170" r="1.6"/><circle cx="480" cy="190" r="1.4"/><circle cx="730" cy="60" r="1.4"/>
+  </g>
+</svg>
