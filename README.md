@@ -54,14 +54,14 @@ These screenshots come from a phone-sized browser on a test Home Assistant insta
 
 ## One design decision
 
-Every view selects the dark Holiday Pine theme, even when the phone uses light mode. The Mushroom light cards also set their label colors explicitly so you can still read “Lamp” against the pine-green surface. On the test instance the label kept a contrast ratio of 10.7:1 in both browser modes. [Theme](themes/holiday-pine.yaml) · [Contrast measurements](SETUP.md#contrast-check)
+Every view selects the dark Holiday Pine theme, even when the phone uses light mode. The Mushroom light cards also set their label colors explicitly so you can still read “Lamp” against the pine-green surface. On the test instance the label kept a contrast ratio of 10.7:1 in both browser modes. All current text pairs checked by the palette script also meet the 4.5:1 WCAG AA threshold for normal text. [Theme](themes/holiday-pine.yaml) · [Contrast measurements](SETUP.md#contrast-check)
 
 ## Make it yours
 
 - **Rooms and scenes.** Change the room titles, button names, and entity IDs in the dashboard YAML. For example, replace `light.tree_lights` with your tree’s light or light group. Keep the alarm action names when changing the alarm entity.
 - **Colors and art.** Edit [the theme](themes/holiday-pine.yaml) and reload themes to try a new palette. The [contrast script](tools/contrast.py) prints ratios for the built-in palette and a low-contrast example from an earlier version. Run it with `python3 tools/contrast.py`. To change the cabin, pines, string lights, stars, or snow, replace the SVGs in `/config/www/holiday-lair/`. Keep their filenames or update the corresponding `/local/holiday-lair/` paths in the dashboard YAML.
 - **Schedule the lights.** The optional [holiday lights blueprint](blueprints/automation/holiday_lair/holiday_lights_schedule.yaml) turns a chosen light on at sunset (with an optional offset) or at a fixed time, and off at the time you set. Select a toggle helper to pause the schedule after the holidays.
-- **Bring your own sound clip.** For a sound when the tree comes on, put a clip you own or have permission to use in `/media`. In the optional [tree-light sound blueprint](blueprints/automation/holiday_lair/tree_light_sound.yaml), choose the light, speaker, and clip under **My media**. On supported speakers you can set the volume and play the clip as an announcement.
+- **Bring your own sound clip.** The download includes the automation. You supply the audio file. Put a clip you own or have permission to use in `/media`. In the optional [tree-light sound blueprint](blueprints/automation/holiday_lair/tree_light_sound.yaml), choose the light, speaker, and clip under **My media**. On supported speakers you can set the volume and play the clip as an announcement.
 
 ## Troubleshooting
 
